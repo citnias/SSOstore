@@ -33,7 +33,7 @@ button:hover {
 }
 .product img {
   width: 100%;
-  max-height: 150px;
+  max-height: 160px;
   object-fit: cover;
   border-radius: 4px;
 }
