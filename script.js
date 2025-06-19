@@ -2,11 +2,7 @@ let productList = [];
 
 function loadProducts() {
   const saved = localStorage.getItem("produk");
-  if (saved) {
-    productList = JSON.parse(saved);
-  } else {
-    productList = [];
-  }
+  productList = saved ? JSON.parse(saved) : [];
 }
 
 function saveProducts() {
@@ -15,26 +11,24 @@ function saveProducts() {
 
 function addProduct() {
   const name = document.getElementById("productName").value.trim();
-  const price = document.getElementById("productPrice").value;
+  const price = document.getElementById("productPrice").value.trim();
   const imageInput = document.getElementById("productImage");
   const image = imageInput.files[0];
 
   if (!name || !price || !image) {
-    alert("Lengkapi semua data produk.");
+    alert("Isi semua kolom sebelum menambahkan produk.");
     return;
   }
 
   const reader = new FileReader();
   reader.onload = function (e) {
     loadProducts();
-
-    const product = {
+    const newProduct = {
       name,
       price,
       image: e.target.result
     };
-
-    productList.push(product);
+    productList.push(newProduct);
     saveProducts();
     renderProducts(true);
     clearForm();
@@ -49,9 +43,9 @@ function clearForm() {
 }
 
 function renderProducts(isAdmin = false) {
+  loadProducts();
   const list = document.getElementById("product-list");
   list.innerHTML = "";
-  loadProducts();
 
   productList.forEach((product, index) => {
     const div = document.createElement("div");
@@ -59,7 +53,7 @@ function renderProducts(isAdmin = false) {
     div.innerHTML = `
       <img src="${product.image}" />
       <span>${product.name}</span>
-      <span>Rp ${Number(product.price).toLocaleString()}</span>
+      <span>Rp ${Number(product.price).toLocaleString("id-ID")}</span>
       ${isAdmin ? `
         <button onclick="editProduct(${index})">Edit</button>
         <button onclick="deleteProduct(${index})">Hapus</button>
@@ -71,9 +65,8 @@ function renderProducts(isAdmin = false) {
 }
 
 function editProduct(index) {
-  const newName = prompt("Nama produk baru:", productList[index].name);
+  const newName = prompt("Nama baru:", productList[index].name);
   const newPrice = prompt("Harga baru:", productList[index].price);
-
   if (newName && newPrice) {
     productList[index].name = newName;
     productList[index].price = newPrice;
@@ -83,7 +76,7 @@ function editProduct(index) {
 }
 
 function deleteProduct(index) {
-  if (confirm("Hapus produk ini?")) {
+  if (confirm("Yakin ingin menghapus produk ini?")) {
     productList.splice(index, 1);
     saveProducts();
     renderProducts(true);
@@ -92,8 +85,8 @@ function deleteProduct(index) {
 
 function orderNow(productName) {
   const phone = "628123456789"; // Ganti dengan nomor WA kamu
-  const message = `Halo! Saya ingin membeli produk ${productName}`;
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
+  const msg = `Halo, saya ingin membeli produk ${productName}`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
 function initPage(isAdmin) {
