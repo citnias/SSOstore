@@ -26,13 +26,20 @@ function addProduct() {
 
   const reader = new FileReader();
   reader.onload = function (e) {
+    // 👉 load dulu agar tidak timpa data lama
+    loadProducts();
+
     const newProduct = {
       name: name,
       price: price,
       image: e.target.result
     };
     productList.push(newProduct);
+
+    // 👉 simpan ke localStorage
     saveProducts();
+
+    // 👉 render ulang
     renderProducts(true);
     clearForm();
   };
