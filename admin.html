@@ -3,22 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Toko Pink</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>Admin Toko Pink</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Admin Area 💼</h1>
+  <h1>Admin Toko Pink 💼</h1>
 
   <div id="form">
-    <input type="text" id="productName" placeholder="Nama Produk"/>
-    <input type="number" id="productPrice" placeholder="Harga (Rp)"/>
-    <input type="file" id="productImage" accept="image/*"/>
+    <input type="text" id="productName" placeholder="Nama Produk" />
+    <input type="number" id="productPrice" placeholder="Harga (Rp)" />
+    <input type="file" id="productImage" accept="image/*" />
     <button onclick="addProduct()">Tambah Produk</button>
   </div>
 
   <div id="product-list"></div>
 
   <script src="script.js"></script>
-  <script>initAdmin();</script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      initPage(true);
+    });
+  </script>
 </body>
 </html>
