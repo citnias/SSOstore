@@ -3,10 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Toko Pink</title>
+  <title>Admin - Toko Pink</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <script>
+    const akses = prompt("Masukkan kode admin:");
+    if (akses !== "12345") {
+      alert("Akses ditolak");
+      window.location.href = "index.html";
+    }
+  </script>
+
   <h1>Admin Toko Pink 💼</h1>
 
   <div id="form">
@@ -18,9 +26,9 @@
 
   <div id="product-list"></div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener("DOMContentLoaded", () => {
       initPage(true);
     });
   </script>
