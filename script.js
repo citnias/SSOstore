@@ -14,61 +14,38 @@ function saveProducts() {
 }
 
 function addProduct() {
-  const name = document.getElementById("productName").value;
+  const name = document.getElementById("productName").value.trim();
   const price = document.getElementById("productPrice").value;
   const imageInput = document.getElementById("productImage");
   const image = imageInput.files[0];
 
   if (!name || !price || !image) {
-    alert("Lengkapi semua data!");
+    alert("Lengkapi semua data produk.");
     return;
   }
 
   const reader = new FileReader();
   reader.onload = function (e) {
-    // 👉 load dulu agar tidak timpa data lama
     loadProducts();
 
-    const newProduct = {
-      name: name,
-      price: price,
+    const product = {
+      name,
+      price,
       image: e.target.result
     };
-    productList.push(newProduct);
 
-    // 👉 simpan ke localStorage
+    productList.push(product);
     saveProducts();
-
-    // 👉 render ulang
     renderProducts(true);
     clearForm();
   };
   reader.readAsDataURL(image);
 }
 
-function editProduct(index) {
-  const newName = prompt("Nama produk baru:", productList[index].name);
-  const newPrice = prompt("Harga baru:", productList[index].price);
-  if (newName && newPrice) {
-    productList[index].name = newName;
-    productList[index].price = newPrice;
-    saveProducts();
-    renderProducts(true);
-  }
-}
-
-function deleteProduct(index) {
-  if (confirm("Hapus produk ini?")) {
-    productList.splice(index, 1);
-    saveProducts();
-    renderProducts(true);
-  }
-}
-
-function orderNow(name) {
-  const phone = "628123456789"; // Ganti dengan nomor WA kamu
-  const message = `Halo! Saya ingin membeli produk ${name}`;
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
+function clearForm() {
+  document.getElementById("productName").value = "";
+  document.getElementById("productPrice").value = "";
+  document.getElementById("productImage").value = "";
 }
 
 function renderProducts(isAdmin = false) {
@@ -93,18 +70,32 @@ function renderProducts(isAdmin = false) {
   });
 }
 
-function clearForm() {
-  document.getElementById("productName").value = "";
-  document.getElementById("productPrice").value = "";
-  document.getElementById("productImage").value = "";
+function editProduct(index) {
+  const newName = prompt("Nama produk baru:", productList[index].name);
+  const newPrice = prompt("Harga baru:", productList[index].price);
+
+  if (newName && newPrice) {
+    productList[index].name = newName;
+    productList[index].price = newPrice;
+    saveProducts();
+    renderProducts(true);
+  }
 }
 
-// Fungsi inisialisasi khusus tiap halaman
-function initAdmin() {
-  loadProducts();
-  renderProducts(true);
+function deleteProduct(index) {
+  if (confirm("Hapus produk ini?")) {
+    productList.splice(index, 1);
+    saveProducts();
+    renderProducts(true);
+  }
 }
-function initCustomer() {
-  loadProducts();
-  renderProducts(false);
+
+function orderNow(productName) {
+  const phone = "628123456789"; // Ganti dengan nomor WA kamu
+  const message = `Halo! Saya ingin membeli produk ${productName}`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
+}
+
+function initPage(isAdmin) {
+  renderProducts(isAdmin);
 }
